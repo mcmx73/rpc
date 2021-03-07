@@ -85,7 +85,6 @@ func (r *ApiRequest) IsParamFound(key string) (found bool) {
 	return
 }
 
-
 //GetParamBytes get param as []byte slice
 func (r *ApiRequest) GetParamBytes(key string) (param []byte, found bool) {
 	paramRaw, found := r.Params[key]
@@ -330,21 +329,21 @@ func (r *ApiRequest) parseStringToFloat64(param string) (num float64, err error)
 	return strconv.ParseFloat(param, 64)
 }
 
+//Json marshal request to []byte slice
 func (r *ApiRequest) Json() (data []byte, err error) {
 	return json.Marshal(r)
 }
 
+//Json marshal request to []byte slice
 func (r *ApiRequest) JsonBytes() (data []byte) {
 	data, _ = json.Marshal(r)
 	return
 }
 
+//Unjson unmarshal json bytes to ApiRequest object
 func (r *ApiRequest) Unjson(data []byte) (err error) {
 	d := json.NewDecoder(bytes.NewBuffer(data))
 	d.UseNumber()
 	err = d.Decode(r)
 	return
 }
-
-//todo Custom marshal/unmarshal ID
-type Number string
