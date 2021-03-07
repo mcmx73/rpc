@@ -96,6 +96,7 @@ func (r *ApiRequest) GetParamBytes(key string) (param []byte, found bool) {
 	return
 }
 
+//GetParamString get 'key' param as string or error if param not set
 func (r *ApiRequest) GetParamString(key string) (param string, err error) {
 	paramRaw, found := r.getParamRaw(key)
 	if !found {
@@ -110,6 +111,8 @@ func (r *ApiRequest) GetParamString(key string) (param string, err error) {
 	}
 	return
 }
+
+//GetParamString get 'key' param as string or default value, if key not found in request
 func (r *ApiRequest) GetParamStringDefault(key, defaultString string) (param string) {
 	paramRaw, found := r.getParamRaw(key)
 	if !found {
@@ -125,6 +128,7 @@ func (r *ApiRequest) GetParamStringDefault(key, defaultString string) (param str
 	return
 }
 
+//GetParamBool get 'key' param as bool value or error if param not set
 func (r *ApiRequest) GetParamBool(key string) (param bool, err error) {
 	paramRaw, found := r.getParamRaw(key)
 	if !found {
@@ -156,6 +160,7 @@ func (r *ApiRequest) GetParamBool(key string) (param bool, err error) {
 	return
 }
 
+//GetParamBoolDefault get 'key' param as bool value or default value, if key not found in request
 func (r *ApiRequest) GetParamBoolDefault(key string, defaultValue bool) (param bool) {
 	paramRaw, found := r.getParamRaw(key)
 	if !found {
