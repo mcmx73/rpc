@@ -26,6 +26,7 @@ func (r *ApiResponse) Unjson(data []byte) (err error) {
 	return json.Unmarshal(data, r)
 }
 
+//SetError set error response
 func (r *ApiResponse) SetError(code int, message string) {
 	if r.Error == nil {
 		r.Error = new(RpcError)
@@ -33,17 +34,20 @@ func (r *ApiResponse) SetError(code int, message string) {
 	r.Error.Code, r.Error.Message = code, message
 }
 
+//SetResult set request processing result
 func (r *ApiResponse) SetResult(result interface{}) (err error) {
 	rawMessage, err := json.Marshal(result)
 	r.Result = rawMessage
 	return
 }
 
+//SetResultBytes set request processing result as json bytes
 func (r *ApiResponse) SetResultBytes(result []byte) {
 	r.Result = result
 	return
 }
 
-func (r *ApiResponse) GetResult(target interface{}) (err error) {
+//ParseResult parse response to Go structure
+func (r *ApiResponse) ParseResult(target interface{}) (err error) {
 	return json.Unmarshal(r.Result, target)
 }
