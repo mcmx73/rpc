@@ -192,6 +192,7 @@ func (r *ApiRequest) GetParamBoolDefault(key string, defaultValue bool) (param b
 	return
 }
 
+//GetParamInt get 'key' param as int value or error if param not set
 func (r *ApiRequest) GetParamInt(key string) (param int, err error) {
 	paramRaw, found := r.getParamRaw(key)
 	if !found {
@@ -223,6 +224,7 @@ func (r *ApiRequest) GetParamInt(key string) (param int, err error) {
 	return
 }
 
+//GetParamInt64 get 'key' param as int64 value or error if param not set
 func (r *ApiRequest) GetParamInt64(key string) (param int64, err error) {
 	paramRaw, found := r.getParamRaw(key)
 	if !found {
@@ -251,6 +253,7 @@ func (r *ApiRequest) GetParamInt64(key string) (param int64, err error) {
 	return
 }
 
+//GetParamFloat64 get 'key' param as float64 value or error if param not set
 func (r *ApiRequest) GetParamFloat64(key string) (param float64, err error) {
 	paramRaw, found := r.getParamRaw(key)
 	if !found {
@@ -279,12 +282,14 @@ func (r *ApiRequest) GetParamFloat64(key string) (param float64, err error) {
 	return
 }
 
+//ParamKeysWalk walk over all params and call 'process' with param key
 func (r *ApiRequest) ParamKeysWalk(process func(paramKey string)) {
 	for key, _ := range r.Params {
 		process(key)
 	}
 }
 
+//GetParamToObject parse param to Go structure. Return false if param not found or error if can't parse value
 func (r *ApiRequest) GetParamToObject(key string, object interface{}) (found bool, err error) {
 	paramRaw, found := r.Params[key]
 	if !found {
@@ -298,6 +303,7 @@ func (r *ApiRequest) GetParamToObject(key string, object interface{}) (found boo
 	return
 }
 
+//ParseParamsToObject parse all param's to Go structure. Return error if can't parse value
 func (r *ApiRequest) ParseParamsToObject(object interface{}) (err error) {
 	paramBytes, err := json.Marshal(r.Params)
 	if err != nil {
@@ -306,8 +312,6 @@ func (r *ApiRequest) ParseParamsToObject(object interface{}) (err error) {
 	err = json.Unmarshal(paramBytes, object)
 	return
 }
-
-
 
 func (r *ApiRequest) getParamRaw(key string) (param interface{}, found bool) {
 	param, found = r.Params[key]
