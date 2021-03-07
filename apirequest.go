@@ -7,12 +7,14 @@ import (
 	"strconv"
 )
 
+//NewRequest create and prepare new RPC Request object
 func NewRequest() (req *ApiRequest) {
 	req = new(ApiRequest)
 	req.Init()
 	return
 }
 
+//SetMethod set JSON RPC Request field
 func (r *ApiRequest) SetMethod(method string) *ApiRequest {
 	r.Method = method
 	return r
@@ -28,37 +30,50 @@ func (r *ApiRequest) Init() {
 }
 
 // Client side methods
+//
+// Prepare JSO-RPC Request params
+// *******************
+
+//SetParam set param for 'key' field. Please note, value must be jsonable
 func (r *ApiRequest) SetParam(key string, value interface{}) *ApiRequest {
 	r.Params[key] = value
 	return r
 }
 
+//SetParam set bool value for 'key' field
 func (r *ApiRequest) SetParamBool(key string, value bool) *ApiRequest {
 	r.Params[key] = value
 	return r
 }
 
+//SetParam set string value for 'key' field
 func (r *ApiRequest) SetParamString(key string, value string) *ApiRequest {
 	r.Params[key] = value
 	return r
 }
 
+//SetParam set int value for 'key' field
 func (r *ApiRequest) SetParamInt(key string, value int) *ApiRequest {
 	r.Params[key] = value
 	return r
 }
 
+//SetParam set int64 value for 'key' field
 func (r *ApiRequest) SetParamInt64(key string, value int64) *ApiRequest {
 	r.Params[key] = value
 	return r
 }
 
+//SetParam set float64 value for 'key' field
 func (r *ApiRequest) SetParamFloat64(key string, value float64) *ApiRequest {
 	r.Params[key] = value
 	return r
 }
 
 // Server side methods
+//
+// Method's for get param's from request
+
 func (r *ApiRequest) GetParamsCount() int {
 	return len(r.Params)
 }
@@ -74,28 +89,6 @@ func (r *ApiRequest) GetParamBytes(key string) (param []byte, found bool) {
 		return []byte{}, false
 	}
 	param, _ = json.Marshal(paramRaw)
-	return
-}
-
-func (r *ApiRequest) GetParamToObject(key string, object interface{}) (found bool, err error) {
-	paramRaw, found := r.Params[key]
-	if !found {
-		return false, nil
-	}
-	paramBytes, err := json.Marshal(paramRaw)
-	if err != nil {
-		return
-	}
-	err = json.Unmarshal(paramBytes, object)
-	return
-}
-
-func (r *ApiRequest) ParseParamsToObject(object interface{}) (err error) {
-	paramBytes, err := json.Marshal(r.Params)
-	if err != nil {
-		return
-	}
-	err = json.Unmarshal(paramBytes, object)
 	return
 }
 
@@ -287,6 +280,29 @@ func (r *ApiRequest) ParamKeysWalk(process func(paramKey string)) {
 		process(key)
 	}
 }
+
+func (r *ApiRequest) GetParamToObject(key string, object interface{}) (found bool, err error) {
+	paramRaw, found := r.Params[key]
+	if !found {
+		return false, nil
+	}
+	paramBytes, err := json.Marshal(paramRaw)
+	if err != nil {
+		return
+	}
+	err = json.Unmarshal(paramBytes, object)
+	return
+}
+
+func (r *ApiRequest) ParseParamsToObject(object interface{}) (err error) {
+	paramBytes, err := json.Marshal(r.Params)
+	if err != nil {
+		return
+	}
+	err = json.Unmarshal(paramBytes, object)
+	return
+}
+
 
 func (r *ApiRequest) parseStringToInt64(param string) (num int64, err error) {
 	return strconv.ParseInt(param, 0, 64)
