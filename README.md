@@ -1,6 +1,4 @@
-# rpc
-
-JSON RPC Package
+JSON RPC 2.0 Client/Server Package
 ================
 
 Install:

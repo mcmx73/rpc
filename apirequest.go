@@ -40,31 +40,31 @@ func (r *ApiRequest) SetParam(key string, value interface{}) *ApiRequest {
 	return r
 }
 
-//SetParam set bool value for 'key' field
+//SetParamBool set bool value for 'key' field
 func (r *ApiRequest) SetParamBool(key string, value bool) *ApiRequest {
 	r.Params[key] = value
 	return r
 }
 
-//SetParam set string value for 'key' field
+//SetParamString set string value for 'key' field
 func (r *ApiRequest) SetParamString(key string, value string) *ApiRequest {
 	r.Params[key] = value
 	return r
 }
 
-//SetParam set int value for 'key' field
+//SetParamInt set int value for 'key' field
 func (r *ApiRequest) SetParamInt(key string, value int) *ApiRequest {
 	r.Params[key] = value
 	return r
 }
 
-//SetParam set int64 value for 'key' field
+//SetParamInt64 set int64 value for 'key' field
 func (r *ApiRequest) SetParamInt64(key string, value int64) *ApiRequest {
 	r.Params[key] = value
 	return r
 }
 
-//SetParam set float64 value for 'key' field
+//SetParamFloat64 set float64 value for 'key' field
 func (r *ApiRequest) SetParamFloat64(key string, value float64) *ApiRequest {
 	r.Params[key] = value
 	return r
@@ -74,15 +74,19 @@ func (r *ApiRequest) SetParamFloat64(key string, value float64) *ApiRequest {
 //
 // Method's for get param's from request
 
+//GetParamsCount get total param's count
 func (r *ApiRequest) GetParamsCount() int {
 	return len(r.Params)
 }
 
-func (r *ApiRequest) GetParamRaw(key string) (param interface{}, found bool) {
-	param, found = r.Params[key]
+//IsParamFound check is key found
+func (r *ApiRequest) IsParamFound(key string) (found bool) {
+	_, found = r.Params[key]
 	return
 }
 
+
+//GetParamBytes get param as []byte slice
 func (r *ApiRequest) GetParamBytes(key string) (param []byte, found bool) {
 	paramRaw, found := r.Params[key]
 	if !found {
@@ -92,13 +96,8 @@ func (r *ApiRequest) GetParamBytes(key string) (param []byte, found bool) {
 	return
 }
 
-func (r *ApiRequest) IsParamFound(key string) (found bool) {
-	_, found = r.Params[key]
-	return
-}
-
 func (r *ApiRequest) GetParamString(key string) (param string, err error) {
-	paramRaw, found := r.GetParamRaw(key)
+	paramRaw, found := r.getParamRaw(key)
 	if !found {
 		return "", ErrParamNotFound
 	}
@@ -112,7 +111,7 @@ func (r *ApiRequest) GetParamString(key string) (param string, err error) {
 	return
 }
 func (r *ApiRequest) GetParamStringDefault(key, defaultString string) (param string) {
-	paramRaw, found := r.GetParamRaw(key)
+	paramRaw, found := r.getParamRaw(key)
 	if !found {
 		return defaultString
 	}
@@ -127,7 +126,7 @@ func (r *ApiRequest) GetParamStringDefault(key, defaultString string) (param str
 }
 
 func (r *ApiRequest) GetParamBool(key string) (param bool, err error) {
-	paramRaw, found := r.GetParamRaw(key)
+	paramRaw, found := r.getParamRaw(key)
 	if !found {
 		return false, ErrParamNotFound
 	}
@@ -158,7 +157,7 @@ func (r *ApiRequest) GetParamBool(key string) (param bool, err error) {
 }
 
 func (r *ApiRequest) GetParamBoolDefault(key string, defaultValue bool) (param bool) {
-	paramRaw, found := r.GetParamRaw(key)
+	paramRaw, found := r.getParamRaw(key)
 	if !found {
 		return defaultValue
 	}
@@ -189,7 +188,7 @@ func (r *ApiRequest) GetParamBoolDefault(key string, defaultValue bool) (param b
 }
 
 func (r *ApiRequest) GetParamInt(key string) (param int, err error) {
-	paramRaw, found := r.GetParamRaw(key)
+	paramRaw, found := r.getParamRaw(key)
 	if !found {
 		return 0, ErrParamNotFound
 	}
@@ -220,7 +219,7 @@ func (r *ApiRequest) GetParamInt(key string) (param int, err error) {
 }
 
 func (r *ApiRequest) GetParamInt64(key string) (param int64, err error) {
-	paramRaw, found := r.GetParamRaw(key)
+	paramRaw, found := r.getParamRaw(key)
 	if !found {
 		return 0, ErrParamNotFound
 	}
@@ -248,7 +247,7 @@ func (r *ApiRequest) GetParamInt64(key string) (param int64, err error) {
 }
 
 func (r *ApiRequest) GetParamFloat64(key string) (param float64, err error) {
-	paramRaw, found := r.GetParamRaw(key)
+	paramRaw, found := r.getParamRaw(key)
 	if !found {
 		return 0, ErrParamNotFound
 	}
@@ -303,6 +302,12 @@ func (r *ApiRequest) ParseParamsToObject(object interface{}) (err error) {
 	return
 }
 
+
+
+func (r *ApiRequest) getParamRaw(key string) (param interface{}, found bool) {
+	param, found = r.Params[key]
+	return
+}
 
 func (r *ApiRequest) parseStringToInt64(param string) (num int64, err error) {
 	return strconv.ParseInt(param, 0, 64)
