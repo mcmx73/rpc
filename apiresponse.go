@@ -2,24 +2,26 @@ package rpc
 
 import "encoding/json"
 
-func NewResponse(requestId ...RequestId) *ApiResponse {
+//NewResponse create new JSON-RPC response object
+func NewResponse(requestId RequestId) *ApiResponse {
 	response := new(ApiResponse)
-	if len(requestId) != 0 {
-		response.Id = requestId[0]
-	}
+	response.Id = requestId
 	response.Jsonrpc = JSON_RPC_VERSION
 	return response
 }
 
+//Json marshal response to []byte slice
 func (r *ApiResponse) Json() (data []byte, err error) {
 	return json.Marshal(r)
 }
 
+//Json marshal response to []byte slice
 func (r *ApiResponse) JsonBytes() (data []byte) {
 	data, _ = json.Marshal(r)
 	return
 }
 
+//Unjson unmarshal json bytes to ApiResponse object
 func (r *ApiResponse) Unjson(data []byte) (err error) {
 	return json.Unmarshal(data, r)
 }
