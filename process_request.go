@@ -78,7 +78,7 @@ func (c *ApiRpcClient) Query(request *ApiRequest, target interface{}) (err error
 	if target == nil {
 		return
 	}
-	jsonResponse := NewResponse()
+	jsonResponse := NewResponse(request.Id)
 	err = jsonResponse.Unjson(responseBody)
 	if err != nil {
 		return
