@@ -1,5 +1,11 @@
 JSON RPC 2.0 Client/Server Package
 ================
+Simple Golang implementation of 
+**[JSON-RPC 2.0 Specification](https://www.jsonrpc.org/specification)**
+
+_Limitations:_
+* "Notification" request processed as ordinary request
+* Batch requests not implemented now, see **ToDo**
 
 Install:
 
@@ -77,6 +83,9 @@ func ProcessComplexRequest(ctx *rpc.ApiContext, request *rpc.ApiRequest, respons
 
 ## TODO
 
+* Implement Batch requests
 * Add tests
 * Implement RPC Request Signing
 * Add more examples
+
+[**JSON-RPC 2.0 Specification** ]: https://www.jsonrpc.org/specification
