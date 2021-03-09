@@ -63,8 +63,8 @@ func (id RequestId) MarshalJSON() ([]byte, error) {
 
 func (id *RequestId) UnmarshalJSON(data []byte) error {
 	var dc []byte
+	fc := true
 	for _, b := range data {
-		fc := true
 		if b < 58 && b > 47 {
 			if fc && b != 48 {
 				fc = false
