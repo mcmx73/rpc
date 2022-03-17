@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/valyala/fasthttp"
+	"net"
 )
 
 type ApiRpcClient struct {
@@ -13,6 +14,7 @@ type ApiRpcClient struct {
 	RpcPassword string
 	auth        string
 	fullUrl     string
+	socketAddr  string
 	client      *fasthttp.Client
 }
 
@@ -24,6 +26,24 @@ func NewApiRpcClient(url *RpcURL, user, password string) (client *ApiRpcClient) 
 	}
 	client.Prepare()
 	return
+}
+func NewApiRpcClientUNIX(socket string, user, password string) (client *ApiRpcClient) {
+	client = &ApiRpcClient{
+		socketAddr:  socket,
+		RpcUser:     user,
+		RpcPassword: password,
+	}
+	client.client.Dial = client.socketDial
+	client.PrepareUNIX()
+	return
+}
+
+func (c *ApiRpcClient) socketDial(socket string) (net.Conn, error) {
+	return net.Dial("unix", c.socketAddr)
+}
+
+func (c *ApiRpcClient) PrepareUNIX() {
+	c.prepareAuth()
 }
 
 func (c *ApiRpcClient) Prepare() {
